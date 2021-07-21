@@ -25,7 +25,7 @@ class TodoContainer extends React.Component {
     ],
   };
 
-  handlerChange = (id) => {
+  handleChange = (id) => {
     this.setState((prevState) => {
       return {
         todos: prevState.todos.map((todo) => {
@@ -60,18 +60,6 @@ class TodoContainer extends React.Component {
     this.setState({
       todos: [...this.state.todos, newTodo],
     });
-    // this.setState((prevState) => {
-    //   return {
-    //     todos: [
-    //       ...prevState.todos,
-    //       {
-    //         id: uuidv4(),
-    //         title,
-    //         completed: false,
-    //       },
-    //     ],
-    //   };
-    // });
   };
 
   render() {
@@ -79,12 +67,12 @@ class TodoContainer extends React.Component {
       <div className="container">
         <div className="inner">
           <Header />
-          <InputTodo
-            handlerChange={this.handlerChange}
-            addTodoItem={this.addTodoItem}
-            DeleteTodo={this.DeleteTodo}
+          <InputTodo addTodoProps={this.addTodoItem} />
+          <TodosList
+            todos={this.state.todos}
+            handleChangeProps={this.handleChange}
+            deleteTodoProps={this.DeleteTodo}
           />
-          <TodosList todos={this.state.todos} />
         </div>
       </div>
     );
