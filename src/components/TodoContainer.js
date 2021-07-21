@@ -76,14 +76,16 @@ class TodoContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <Header />
-        <InputTodo addTodoProps={this.addTodoItem} />
-        <TodosList
-          todos={this.state.todos}
-          handleChangeProps={this.handlerChange}
-          deleteTodoProps={this.DeleteTodo}
-        />
+      <div className="container">
+        <div className="inner">
+          <Header />
+          <InputTodo
+            handlerChange={this.handlerChange}
+            addTodoItem={this.addTodoItem}
+            DeleteTodo={this.DeleteTodo}
+          />
+          <TodosList todos={this.state.todos} />
+        </div>
       </div>
     );
   }
