@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //styles
 import styles from "./TodoItem.module.css";
 
-import React from "react";
+const TodoItem = (props) => {
+  const [editing, setEditing] = useState(false);
 
-const TodoItem = () => {
-  const [editing, setEditing] = setState(false);
-
-  const handleEditing = (e) => {
+  const handleEditing = () => {
     setEditing(true);
   };
 
-  const handleUpdatedDone = () => {
+  const handleUpdatedDone = (e) => {
     if (e.key === "Enter") {
       setEditing(false);
     }
@@ -32,6 +30,12 @@ const TodoItem = () => {
   } else {
     editMode.display = "none";
   }
+
+  useEffect(() => {
+    return () => {
+      console.log("cleaning up...");
+    };
+  }, []);
 
   return (
     <li className={styles.item}>
