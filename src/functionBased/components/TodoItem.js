@@ -51,7 +51,7 @@ const TodoItem = (props) => {
           className="input-submit"
           onClick={() => props.deleteTodoProps(id)}
         >
-          <FaTrash color="darkcyan" size="20px" className="submit-icon" />
+          <FaTrash style={{ color: "orangered", fontSize: "16px" }} />
         </button>
         <span style={completed ? completedStyle : null}>{title}</span>
       </div>
