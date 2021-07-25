@@ -73,6 +73,12 @@ class TodoContainer extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    console.log("Cleaning up...");
+    localStorage.removeItem("todos");
+    // Clear the localStorage
+  }
+
   render() {
     return (
       <div className="container">
