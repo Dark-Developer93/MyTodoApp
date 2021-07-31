@@ -23,7 +23,7 @@ const TodoItem = (props) => {
     opacity: 0.4,
     textDecoration: "line-through",
   };
-  const { completed, id, title } = props.todo;
+  const { completed, id, title, priority } = props.todo;
   let viewMode = {};
   let editMode = {};
   if (editing) {
@@ -48,12 +48,32 @@ const TodoItem = (props) => {
           onChange={() => props.handleChangeProps(id)}
         />
         <button
-          className="input-submit"
+          style={{ cursor: "pointer", width: "50px" }}
           onClick={() => props.deleteTodoProps(id)}
         >
-          <FaTrash style={{ color: "orangered", fontSize: "16px" }} />
+          <FaTrash
+            style={{
+              color: "orangered",
+              fontSize: "16px",
+            }}
+          />
         </button>
         <span style={completed ? completedStyle : null}>{title}</span>
+        <button
+          style={
+            priority === "High"
+              ? { "background-color": "lightcoral" }
+              : priority === "Medium"
+              ? { "background-color": "yellowgreen" }
+              : priority === "Low"
+              ? { "background-color": "lightgreen" }
+              : priority === "None"
+              ? { "background-color": "#f1f3f4" }
+              : null
+          }
+        >
+          {priority}
+        </button>
       </div>
       <input
         type="text"
