@@ -33,10 +33,11 @@ const TodoContainer = () => {
     ]);
   };
 
-  const addTodoItem = (title) => {
+  const addTodoItem = (title, priority) => {
     const newTodo = {
       id: uuidv4(),
       title,
+      priority,
       completed: false,
     };
     setTodos([...todos, newTodo]);
