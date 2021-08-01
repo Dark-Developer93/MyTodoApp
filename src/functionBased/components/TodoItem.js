@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
+import { Draggable } from "react-beautiful-dnd";
 
 //styles
 import styles from "./TodoItem.module.css";
@@ -23,7 +24,7 @@ const TodoItem = (props) => {
     opacity: 0.4,
     textDecoration: "line-through",
   };
-  const { completed, id, title, priority } = props.todo;
+  const { completed, id, title, priority, index } = props.todo;
   let viewMode = {};
   let editMode = {};
   if (editing) {
@@ -39,68 +40,77 @@ const TodoItem = (props) => {
   }, []);
 
   return (
-    <li className={styles.item}>
-      <div onDoubleClick={handleEditing} style={viewMode}>
-        <input
-          type="checkbox"
-          className={styles.checkbox}
-          checked={completed}
-          onChange={() => props.handleChangeProps(id)}
-        />
-        <button
-          style={{ cursor: "pointer", width: "50px" }}
-          onClick={() => props.deleteTodoProps(id)}
+    <Draggable key={id} draggableId={id} index={index}>
+      {(provided) => (
+        <li
+          className={styles.item}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          <FaTrash
-            style={{
-              color: "orangered",
-              fontSize: "16px",
-            }}
+          <div onDoubleClick={handleEditing} style={viewMode}>
+            <input
+              type="checkbox"
+              className={styles.checkbox}
+              checked={completed}
+              onChange={() => props.handleChangeProps(id)}
+            />
+            <button
+              style={{ cursor: "pointer", width: "50px" }}
+              onClick={() => props.deleteTodoProps(id)}
+            >
+              <FaTrash
+                style={{
+                  color: "orangered",
+                  fontSize: "16px",
+                }}
+              />
+            </button>
+            <span style={completed ? completedStyle : null}>{title}</span>
+            <button
+              style={
+                priority === "High"
+                  ? { "background-color": "lightcoral" }
+                  : priority === "Medium"
+                  ? { "background-color": "yellowgreen" }
+                  : priority === "Low"
+                  ? { "background-color": "lightgreen" }
+                  : priority === "None"
+                  ? { "background-color": "#f1f3f4" }
+                  : null
+              }
+            >
+              {priority}
+            </button>
+          </div>
+          <input
+            type="text"
+            style={editMode}
+            className={styles.textInput}
+            value={title}
+            onChange={(e) => props.setUpdate(e.target.value, priority, id)}
+            onKeyDown={handleUpdatedDone}
           />
-        </button>
-        <span style={completed ? completedStyle : null}>{title}</span>
-        <button
-          style={
-            priority === "High"
-              ? { "background-color": "lightcoral" }
-              : priority === "Medium"
-              ? { "background-color": "yellowgreen" }
-              : priority === "Low"
-              ? { "background-color": "lightgreen" }
-              : priority === "None"
-              ? { "background-color": "#f1f3f4" }
-              : null
-          }
-        >
-          {priority}
-        </button>
-      </div>
-      <input
-        type="text"
-        style={editMode}
-        className={styles.textInput}
-        value={title}
-        onChange={(e) => props.setUpdate(e.target.value, priority, id)}
-        onKeyDown={handleUpdatedDone}
-      />
-      <input
-        tpye="radio"
-        list="priorities"
-        name="priority"
-        id="priority"
-        style={editMode}
-        className={styles.textInput}
-        value={priority}
-        onChange={(e) => props.setUpdate(title, e.target.value, id)}
-        onKeyDown={handleUpdatedDone}
-      />
-      <datalist id="priorities">
-        <option value="High" />
-        <option value="Medium" />
-        <option value="Low" />
-        <option value="None" />
-      </datalist>
-    </li>
+          <input
+            tpye="radio"
+            list="priorities"
+            name="priority"
+            id="priority"
+            style={editMode}
+            className={styles.textInput}
+            value={priority}
+            onChange={(e) => props.setUpdate(title, e.target.value, id)}
+            onKeyDown={handleUpdatedDone}
+          />
+          <datalist id="priorities">
+            <option value="High" />
+            <option value="Medium" />
+            <option value="Low" />
+            <option value="None" />
+          </datalist>
+        </li>
+      )}
+    </Draggable>
   );
 };
 

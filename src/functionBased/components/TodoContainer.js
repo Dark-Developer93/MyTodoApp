@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import Header from "./Header";
 import InputTodo from "./InputTodo";
 import TodosList from "./TodosList";
@@ -33,12 +34,13 @@ const TodoContainer = () => {
     ]);
   };
 
-  const addTodoItem = (title, priority) => {
+  const addTodoItem = (title, priority, i) => {
     const newTodo = {
       id: uuidv4(),
       title,
       priority,
       completed: false,
+      index: i,
     };
     setTodos([...todos, newTodo]);
   };
@@ -54,6 +56,17 @@ const TodoContainer = () => {
       })
     );
   };
+  const [orderdTodos, updateTodos] = useState(todos);
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(orderdTodos);
+    const [reorderedTodo] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedTodo);
+
+    updateTodos(items);
+  }
   function getInitialTodos() {
     // getting stored items
     const temp = localStorage.getItem("todos");
@@ -80,7 +93,7 @@ const TodoContainer = () => {
   }, [todos]);
 
   return (
-    <>
+    <DragDropContext onDragEnd={handleOnDragEnd}>
       <Navbar />
       <Switch>
         <Route exact path="/">
@@ -89,10 +102,11 @@ const TodoContainer = () => {
               <Header />
               <InputTodo addTodoProps={addTodoItem} />
               <TodosList
-                todos={todos}
+                todos={orderdTodos}
                 handleChangeProps={handleChange}
                 deleteTodoProps={deleteTodo}
                 setUpdate={setUpdate}
+                onDragEnd={handleOnDragEnd}
               />
             </div>
           </div>
@@ -104,7 +118,7 @@ const TodoContainer = () => {
           <NotMatch />
         </Route>
       </Switch>
-    </>
+    </DragDropContext>
   );
 };
 
