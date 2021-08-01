@@ -80,9 +80,26 @@ const TodoItem = (props) => {
         style={editMode}
         className={styles.textInput}
         value={title}
-        onChange={(e) => props.setUpdate(e.target.value, id)}
+        onChange={(e) => props.setUpdate(e.target.value, priority, id)}
         onKeyDown={handleUpdatedDone}
       />
+      <input
+        tpye="radio"
+        list="priorities"
+        name="priority"
+        id="priority"
+        style={editMode}
+        className={styles.textInput}
+        value={priority}
+        onChange={(e) => props.setUpdate(title, e.target.value, id)}
+        onKeyDown={handleUpdatedDone}
+      />
+      <datalist id="priorities">
+        <option value="High" />
+        <option value="Medium" />
+        <option value="Low" />
+        <option value="None" />
+      </datalist>
     </li>
   );
 };
